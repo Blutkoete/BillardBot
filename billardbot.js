@@ -2,8 +2,8 @@ const Discord = require('discord.js')
 
 const token = require('./token')
 
-const initial_game_state = {'balls': ['1halb', '1voll', '2halb', '2voll', '3halb', '3voll', '4halb', '4voll', '5halb', '5voll', '6halb', '6voll', '7halb', '7voll', '8']}
-let current_game_state = initial_game_state;
+const initial_game_state = {'balls': ['1halb', '1voll', '2halb', '2voll', '3halb', '3voll', '4halb', '4voll', '5halb', '5voll', '6halb', '6voll', '7halb', '7voll', '8']};
+let current_game_state = {'balls': initial_game_state.balls.slice()};
 const ball_deposit_chance = 0.1;
 
 function callback_none(arguments) {
@@ -11,7 +11,7 @@ function callback_none(arguments) {
 }
 
 function callback_neu(arguments) {
-    current_game_state = initial_game_state;
+    current_game_state.balls = initial_game_state.balls.slice();
     return 'Die Kugeln wurden neu aufgebaut.';
 }
 
