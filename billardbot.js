@@ -7,10 +7,16 @@ function callback_none(arguments) {
 }
 
 function callback_neu(arguments) {
+    for (index in arguments) {
+        console.log(arguments[index]);
+    }
     return 'Leider noch nicht implementiert!';
 }
 
 function callback_stoss(arguments) {
+    for (index in arguments) {
+        console.log(arguments[index]);
+    }
     return 'Leider noch nicht implementiert!';
 }
 
@@ -81,7 +87,10 @@ client.on('message', message => {
         return;
     }
 
-    let arguments = message.content.slice(('!' + current_command.command).length).split(' ').shift().toLowerCase();
+    let arguments = message.content.slice(('!' + current_command.command).length).split(' ');
+    while(arguments.length > 0 && arguments[0] == 0) {
+        arguments.shift();
+    }
     if (arguments.length != current_command.argument_count) {
         console.log("Wrong number of arguments for command '" + current_command.command + "': '" + message.content + "' (" + current_command.argument_count + " expected)");
         if (current_command.argument_count == 0) {
