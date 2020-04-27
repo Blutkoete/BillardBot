@@ -2,22 +2,52 @@ const Discord = require('discord.js')
 
 const token = require('./token')
 
+const initial_game_state = {'balls': ['1halb', '1voll', '2halb', '2voll', '3halb', '3voll', '4halb', '4voll', '5halb', '5voll', '6halb', '6voll', '7halb', '7voll', '8']}
+let current_game_state = initial_game_state;
+const ball_deposit_chance = 0.1;
+
 function callback_none(arguments) {
     return 'Internal Bot Error';
 }
 
 function callback_neu(arguments) {
-    for (index in arguments) {
-        console.log(arguments[index]);
-    }
-    return 'Leider noch nicht implementiert!';
+    current_game_state = initial_game_state;
+    return 'Die Kugeln wurden neu aufgebaut.';
 }
 
 function callback_stoss(arguments) {
-    for (index in arguments) {
-        console.log(arguments[index]);
+    if (arguments.length != 1) {
+        return 'Internal Bot Error';
     }
-    return 'Leider noch nicht implementiert!';
+
+    if (current_game_state.balls.indexOf('8') < 0) {
+        return 'Die schwarze 8 ist aus dem Spiel. Du musst !neu aufbauen.';
+    }
+
+    if (current_game_state.balls.indexOf(arguments[0]) < 0) {
+        return 'Diese Kugel ist nicht im Spiel.';
+    }
+
+    lucky_number = Math.random() * (1.0 - 0.0);
+
+    if (lucky_number <= ball_deposit_chance)
+    {
+        current_game_state.balls.splice(current_game_state.balls.indexOf(arguments[0]), 1);
+
+        if(arguments[0] == '8') {
+            if (current_game_state.balls.length == 0) {
+                return 'Eingelocht! Gewonnen!';
+            }
+            else
+            {
+                return 'Die schwarze 8 wurde zu früh eingelocht! Verloren!';
+            }
+        }
+
+        return 'Eingelocht!';
+    }
+
+    return 'Leider nicht eingelocht.';
 }
 
 function callback_haudrauf(arguments) {
@@ -25,7 +55,23 @@ function callback_haudrauf(arguments) {
 }
 
 function callback_status(arguments) {
-    return 'Leider noch nicht implementiert!';
+    if (current_game_state.balls.length == 0) {
+        return 'Alle Kugeln wurden eingelocht.';
+    }
+
+    var status = 'Vorhandene Kugeln: '
+    for(index in current_game_state.balls)
+    {
+        status = status + current_game_state.balls[index];
+        if (index < current_game_state.balls.length - 1) {
+            status = status + ", ";
+        }
+        else
+        {
+            status = status + ".";
+        }
+    }
+    return status;
 }
 
 function callback_hilfe(arguments) {
@@ -49,7 +95,7 @@ client.on('ready', () => {
     // List servers the bot is connected to
     console.log("Servers:");
     for (let [key, value] of client.guilds.cache) {
-        console.log("--- "  + key + " " + value.name);
+        console.log("\t["  + key + "] " + value.name);
     }
 });
 
