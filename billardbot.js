@@ -88,7 +88,7 @@ client.on('message', message => {
     }
 
     let arguments = message.content.slice(('!' + current_command.command).length).split(' ');
-    while(arguments.length > 0 && arguments[0] == 0) {
+    while(arguments.length > 0 && arguments[0] == '') {
         arguments.shift();
     }
     if (arguments.length != current_command.argument_count) {
