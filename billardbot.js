@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 
-const token = require('token.js')
+const token = require('./token')
 
 const client = new Discord.Client()
 client.on('ready', () => {
@@ -8,7 +8,7 @@ client.on('ready', () => {
     // List servers the bot is connected to
     console.log("Servers:")
     for (let [key, value] of client.guilds.cache) {
-        console.log("--- "  + value.name)
+        console.log("--- "  + key + " " + value.name)
     }
 });
 
