@@ -31,27 +31,28 @@ client.on('message', message => {
     let command = arguments.shift().toLowerCase();
 
     let current_command = commands.command_none;
-    for (index in commands.available_commands) {
-        let available_command = commands.available_commands[index]
-        if (command == available_command.command)
-        {
-            current_command = available_command;
-            break;
+    for (let index in commands.available_commands) {
+        if (commands.available_commands.hasOwnProperty(index)) {
+            let available_command = commands.available_commands[index]
+            if (command === available_command.command) {
+                current_command = available_command;
+                break;
+            }
         }
     }
 
-    if (current_command == commands.command_none) {
+    if (current_command === commands.command_none) {
         console.log('Unknown command: "' + message.content + '"');
         message.channel.send('Das Kommando verstehe ich leider nicht.');
         return;
     }
 
-    if (arguments.length != current_command.argument_count) {
+    if (arguments.length !== current_command.argument_count) {
         console.log('[' + message.guild.name + '] Wrong number of arguments for command "' + current_command.command + '": "' + message.content + '" (' + current_command.argument_count + ' expected)');
-        if (current_command.argument_count == 0) {
+        if (current_command.argument_count === 0) {
             message.channel.send('Das geht nur ohne zusätzliches Argument.');
         }
-        else if (current_command.argument_count == 1)
+        else if (current_command.argument_count === 1)
         {
             message.channel.send('Das geht nur mit genau einem zusätzlichen Argument.');
         }
@@ -63,7 +64,6 @@ client.on('message', message => {
     }
 
     message.channel.send(current_command.callback(message.guild.name, message.channel.name, arguments));
-    return;
 });
 
 client.login(token.bot_secret_token)

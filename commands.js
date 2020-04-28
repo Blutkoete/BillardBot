@@ -20,7 +20,7 @@ function callback_neu(server_name, channel_name, arguments) {
 }
 
 function callback_stoss(server_name, channel_name, arguments) {
-    if (arguments.length != 1) {
+    if (arguments.length !== 1) {
         return 'Internal Bot Error';
     }
 
@@ -37,14 +37,14 @@ function callback_stoss(server_name, channel_name, arguments) {
         return 'Diese Kugel ist nicht im Spiel.';
     }
 
-    lucky_number = Math.random() * (1.0 - 0.0);
+    const lucky_number = Math.random();
 
     if (lucky_number <= game_engine.ball_deposit_chance)
     {
         game_engine.current_game_states[key].balls.splice(game_engine.current_game_states[key].balls.indexOf(arguments[0]), 1);
 
-        if(arguments[0] == '8') {
-            if (game_engine.current_game_states[key].balls.length == 0) {
+        if(arguments[0] === '8') {
+            if (game_engine.current_game_states[key].balls.length === 0) {
                 return 'Eingelocht! Gewonnen!';
             }
             else
@@ -69,20 +69,20 @@ function callback_status(server_name, channel_name, arguments) {
         return 'In diesem Channel gibt es kein aktives Billardspiel.';
     }
 
-    if (game_engine.current_game_states[key].balls.length == 0) {
+    if (game_engine.current_game_states[key].balls.length === 0) {
         return 'Alle Kugeln wurden eingelocht.';
     }
 
-    var status = 'Vorhandene Kugeln: '
-    for(index in game_engine.current_game_states[key].balls)
+    let status = 'Vorhandene Kugeln: '
+    for(let index in game_engine.current_game_states[key].balls)
     {
-        status = status + game_engine.current_game_states[key].balls[index];
-        if (index < game_engine.current_game_states[key].balls.length - 1) {
-            status = status + ", ";
-        }
-        else
-        {
-            status = status + ".";
+        if (game_engine.current_game_states[key].balls.hasOwnProperty(index)) {
+            status = status + game_engine.current_game_states[key].balls[index];
+            if (index < game_engine.current_game_states[key].balls.length - 1) {
+                status = status + ", ";
+            } else {
+                status = status + ".";
+            }
         }
     }
     return status;
