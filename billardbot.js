@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 
-const token = require('./token')
+const token = process.env.BOT_SECRET_TOKEN || require('./token').bot_secret_token;
+
 const commands = require('./commands')
 
 const client = new Discord.Client()
@@ -65,4 +66,4 @@ client.on('message', message => {
     message.channel.send(current_command.callback(message.guild.name, message.channel.name, arguments));
 });
 
-client.login(token.bot_secret_token)
+client.login(token)
