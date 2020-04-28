@@ -1,15 +1,19 @@
 const game_engine = require('./game_engine')
 
-function create_game_state_index(server_name, channel_name) {
-    return server_name + '::' + channel_name;
+function log_command(server_name, channel_name, command, arguments)
+{
+    console.log('[' + server_name + '] Executing command "' + command + '" for channel "' + channel_name + '" with the following arguments: ' + arguments)
 }
 
 function callback_none(server_name, channel_name, arguments) {
+    log_command(server_name, channel_name, 'none', arguments)
     return 'Internal Bot Error';
 }
 
 function callback_neu(server_name, channel_name, arguments) {
-    let key = create_game_state_index(server_name, channel_name);
+    log_command(server_name, channel_name, 'neu', arguments)
+
+    let key = game_engine.create_game_state_index(server_name, channel_name);
     if (key in game_engine.current_game_states) {
         game_engine.current_game_states[key].balls = game_engine.initial_game_state.balls.slice();
     }
@@ -20,11 +24,13 @@ function callback_neu(server_name, channel_name, arguments) {
 }
 
 function callback_stoss(server_name, channel_name, arguments) {
+    log_command(server_name, channel_name, 'stoss', arguments)
+
     if (arguments.length !== 1) {
         return 'Internal Bot Error';
     }
 
-    let key = create_game_state_index(server_name, channel_name);
+    let key = game_engine.create_game_state_index(server_name, channel_name);
     if (!(key in game_engine.current_game_states)) {
         return 'In diesem Channel gibt es kein aktives Billardspiel.';
     }
@@ -60,11 +66,14 @@ function callback_stoss(server_name, channel_name, arguments) {
 }
 
 function callback_haudrauf(server_name, channel_name, arguments) {
+    log_command(server_name, channel_name, 'haudrauf', arguments)
     return 'Leider noch nicht implementiert!';
 }
 
 function callback_status(server_name, channel_name, arguments) {
-    let key = create_game_state_index(server_name, channel_name);
+    log_command(server_name, channel_name, 'status', arguments)
+
+    let key = game_engine.create_game_state_index(server_name, channel_name);
     if (!(key in game_engine.current_game_states)) {
         return 'In diesem Channel gibt es kein aktives Billardspiel.';
     }
@@ -89,6 +98,7 @@ function callback_status(server_name, channel_name, arguments) {
 }
 
 function callback_hilfe(server_name, channel_name, arguments) {
+    log_command(server_name, channel_name, 'hilfe', arguments)
     return 'Leider noch nicht implementiert!';
 }
 
