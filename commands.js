@@ -140,7 +140,7 @@ function callback_status(server_name, channel_name, arguments) {
 function callback_hilfe(server_name, channel_name, arguments) {
     log_command(server_name, channel_name, 'hilfe', arguments);
 
-    return 'Leider noch nicht implementiert!';
+    return '"neu" - neues Spiel, "haudrauf" - einfach draufhauen, "stoss <Kugel>" - gezielt <Kugel> einlochen, "status" - Tischübersicht';
 }
 
 const command_none = {'command': 'none', 'argument_count': 0, 'callback': callback_none}
