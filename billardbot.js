@@ -3,7 +3,7 @@ const Discord = require('discord.js')
 const token = require('./token')
 const commands = require('./commands')
 
-const channel_id = '405048908784336896'
+const bot_prefix = 'bb'
 
 const client = new Discord.Client()
 
@@ -17,27 +17,23 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-    console.log('[' + message.guild.name + '] Received a message on channel "' + message.channel.name + '".')
-
     if (message.author.bot) {
         console.log('[' + message.guild.name + '] Ignoring message from bot in "' + message.channel.name + '" [' + message.channel.id + '].');
         return;
     }
 
-    if (!message.content.startsWith('!')) {
-        console.log('[' + message.guild.name + '] Ignoring message not starting with "!" in "' + message.channel.name + '" [' + message.channel.id + '].');
+    if (!message.content.startsWith('!' + bot_prefix + ' ')) {
+        console.log('[' + message.guild.name + '] Ignoring message not starting with "!' + bot_prefix + '" in "' + message.channel.name + '" [' + message.channel.id + '].');
         return;
     }
 
-    if (message.channel.id != channel_id) {
-        console.log('[' + message.guild.name + '] Ignoring message in channel "' + message.channel.name + '" [' + message.channel.id + '].');
-        return;
-    }
+    let arguments = message.content.slice(('!' + bot_prefix + ' ').length).split(' ');
+    let command = arguments.shift().toLowerCase();
 
     let current_command = commands.command_none;
     for (index in commands.available_commands) {
         let available_command = commands.available_commands[index]
-        if (message.content.startsWith('!' + available_command.command))
+        if (command == available_command.command)
         {
             current_command = available_command;
             break;
@@ -50,10 +46,6 @@ client.on('message', message => {
         return;
     }
 
-    let arguments = message.content.slice(('!' + current_command.command).length).split(' ');
-    while(arguments.length > 0 && arguments[0] == '') {
-        arguments.shift();
-    }
     if (arguments.length != current_command.argument_count) {
         console.log('[' + message.guild.name + '] Wrong number of arguments for command "' + current_command.command + '": "' + message.content + '" (' + current_command.argument_count + ' expected)');
         if (current_command.argument_count == 0) {
