@@ -3,8 +3,6 @@ const Discord = require('discord.js')
 const token = require('./token')
 const commands = require('./commands')
 
-const bot_prefix = 'bb'
-
 const client = new Discord.Client()
 
 client.on('ready', () => {
@@ -21,13 +19,14 @@ client.on('message', message => {
         console.log('[' + message.guild.name + '] Ignoring message from bot in "' + message.channel.name + '" [' + message.channel.id + '].');
         return;
     }
+    var mentionsBot = message.mentions.users.has(client.user.id);
 
-    if (!message.content.startsWith('!' + bot_prefix + ' ')) {
-        console.log('[' + message.guild.name + '] Ignoring message not starting with "!' + bot_prefix + '" in "' + message.channel.name + '" [' + message.channel.id + '].');
+    if(!mentionsBot) {
+        console.log('[' + message.guild.name + '] Ignoring message not mentioning me in "' + message.channel.name + '" [' + message.channel.id + '].');
         return;
     }
 
-    let arguments = message.content.slice(('!' + bot_prefix + ' ').length).split(' ');
+    let arguments = message.content.split(' ');
     let command = arguments.shift().toLowerCase();
 
     let current_command = commands.command_none;
