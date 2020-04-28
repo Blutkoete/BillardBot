@@ -42,7 +42,7 @@ client.on('message', message => {
     }
 
     if (current_command === commands.command_none) {
-        console.log('Unknown command: "' + message.content + '"');
+        console.log('[' + message.guild.name + '] Unknown command: "' + message.content + '"');
         message.channel.send('Das Kommando verstehe ich leider nicht.');
         return;
     }
