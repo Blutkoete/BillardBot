@@ -1,17 +1,17 @@
 const game_engine = require('./game_engine')
 
-function log_command(server_name, channel_name, command, arguments)
+function log_command(server_name, channel_name, command, args)
 {
-    console.log('[' + server_name + '] Executing command "' + command + '" for channel "' + channel_name + '" with the following arguments: ' + arguments)
+    console.log(`[${server_name}] Executing command "${command}" for channel "${channel_name}" with the following arguments: ${args}`)
 }
 
-function callback_none(server_name, channel_name, arguments) {
-    log_command(server_name, channel_name, 'none', arguments)
+function callback_none(server_name, channel_name, args) {
+    log_command(server_name, channel_name, 'none', args)
     return 'Internal Bot Error';
 }
 
-function callback_neu(server_name, channel_name, arguments) {
-    log_command(server_name, channel_name, 'neu', arguments)
+function callback_neu(server_name, channel_name, args) {
+    log_command(server_name, channel_name, 'neu', args)
 
     if (game_engine.create_new_game(game_engine.create_game_state_index(server_name, channel_name)) === game_engine.RESULT_GAME_STARTED) {
         return 'Die Kugeln wurden neu aufgebaut.';
@@ -20,8 +20,8 @@ function callback_neu(server_name, channel_name, arguments) {
     return 'Internal Bot Error';
 }
 
-function callback_stoss(server_name, channel_name, arguments) {
-    log_command(server_name, channel_name, 'stoss', arguments)
+function callback_stoss(server_name, channel_name, args) {
+    log_command(server_name, channel_name, 'stoss', args)
 
     if (arguments.length !== 1) {
         return 'Internal Bot Error';
@@ -50,8 +50,8 @@ function callback_stoss(server_name, channel_name, arguments) {
     }
 }
 
-function callback_haudrauf(server_name, channel_name, arguments) {
-    log_command(server_name, channel_name, 'haudrauf', arguments)
+function callback_haudrauf(server_name, channel_name, args) {
+    log_command(server_name, channel_name, 'haudrauf', args)
 
     let [result, balls_deposited] = game_engine.strike_all_balls(game_engine.create_game_state_index(server_name, channel_name));
     switch(result) {
@@ -110,8 +110,8 @@ function callback_haudrauf(server_name, channel_name, arguments) {
     }
 }
 
-function callback_status(server_name, channel_name, arguments) {
-    log_command(server_name, channel_name, 'status', arguments)
+function callback_status(server_name, channel_name, args) {
+    log_command(server_name, channel_name, 'status', args)
 
     let [result, game_state] = game_engine.get_game_status(game_engine.create_game_state_index(server_name, channel_name));
     if (result === game_engine.RESULT_GAME_DOES_NOT_EXIST) {
@@ -137,8 +137,8 @@ function callback_status(server_name, channel_name, arguments) {
     return status;
 }
 
-function callback_hilfe(server_name, channel_name, arguments) {
-    log_command(server_name, channel_name, 'hilfe', arguments);
+function callback_hilfe(server_name, channel_name, args) {
+    log_command(server_name, channel_name, 'hilfe', args);
 
     return '"neu" - neues Spiel, "haudrauf" - einfach draufhauen, "stoss <Kugel>" - gezielt <Kugel> einlochen, "status" - Tischübersicht';
 }
