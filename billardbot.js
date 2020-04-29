@@ -7,28 +7,27 @@ const commands = require('./commands')
 const client = new Discord.Client()
 
 client.on('ready', () => {
-    console.log('Connected as ' + client.user.tag);
+    console.log(`Connected as ${client.user.tag}`);
     // List servers the bot is connected to
     console.log('Servers:');
     for (let [key, value] of client.guilds.cache) {
-        console.log('\t['  + key + '] ' + value.name);
+        console.log(`\t[${key}] ${value.name}`);
     }
 });
 
 client.on('message', message => {
     if (message.author.bot) {
-        console.log('[' + message.guild.name + '] Ignoring message from bot in "' + message.channel.name + '" [' + message.channel.id + '].');
+        console.log(`[${message.guild?.name}] Ignoring message from bot in ${message.channel.name} [${message.channel.id}].`);
         return;
     }
     var mentionsBot = message.mentions.users.has(client.user.id);
-
     if(!mentionsBot) {
-        console.log('[' + message.guild.name + '] Ignoring message not mentioning me in "' + message.channel.name + '" [' + message.channel.id + '].');
+        console.log(`[${message.guild?.name}] Ignoring message not mentioning me in ${message.channel.name} [${message.channel.id}].`);
         return;
     }
 
-    let arguments = message.content.split(' ');
-    let command = arguments.shift().toLowerCase();
+    const args = message.content.split(' ').slice(1);
+    let command = args.shift().toLowerCase();
 
     let current_command = commands.command_none;
     for (let index in commands.available_commands) {
@@ -42,13 +41,13 @@ client.on('message', message => {
     }
 
     if (current_command === commands.command_none) {
-        console.log('[' + message.guild.name + '] Unknown command: "' + message.content + '"');
+        console.log(`[${message.guild?.name}] Unknown command: "${message.content}"`);
         message.channel.send('Das Kommando verstehe ich leider nicht.');
         return;
     }
 
-    if (arguments.length !== current_command.argument_count) {
-        console.log('[' + message.guild.name + '] Wrong number of arguments for command "' + current_command.command + '": "' + message.content + '" (' + current_command.argument_count + ' expected)');
+    if (args.length !== current_command.argument_count) {
+        console.log(`[${message.guild?.name}] Wrong number of arguments for command "${current_command.command}": "{message.content}" (${current_command.argument_count} expected)`);
         if (current_command.argument_count === 0) {
             message.channel.send('Das geht nur ohne zusätzliches Argument.');
         }
@@ -58,12 +57,12 @@ client.on('message', message => {
         }
         else
         {
-            message.channel.send('Das geht nur mit ' + current_command.argument_count + ' zusätzlichen Argumenten.');
+            message.channel.send(`Das geht nur mit ${current_command.argument_count} zusätzlichen Argumenten.`);
         }
         return;
     }
 
-    message.channel.send(current_command.callback(message.guild.name, message.channel.name, arguments));
+    message.channel.send(current_command.callback(message.guild?.name, message.channel.name, args));
 });
 
 client.login(token)
