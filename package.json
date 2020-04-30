@@ -4,7 +4,8 @@
   "description": "",
   "main": "billardbot.js",
   "scripts": {
-    "start": "babel-node billardbot.js"
+    "start": "babel-node billardbot.js",
+    "watch": "babel-watch billardbot.js"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^1.7.0",
+    "babel-watch": "^7.0.0"
   }
 }
