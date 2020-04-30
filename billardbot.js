@@ -32,7 +32,7 @@ client.on('message', message => {
         return;
     }
 
-    console.log(`[[${message.guild.name}] [${message.channel.name}] Reacting to message "${message.content}".`)
+    console.log(`[${message.guild.name}] [${message.channel.name}] Reacting to message "${message.content}".`)
 
     const args = message.content.split(' ').slice(1);
     let command = args.shift().toLowerCase();
