@@ -16,6 +16,7 @@ module.exports = {
                 break;
             case game_engine.RESULT_GAME_IS_ALREADY_OVER:
                 message.channel.send('Die schwarze 8 ist aus dem Spiel. Du musst "neu" aufbauen.');
+                break;
             case game_engine.RESULT_BALL_DEPOSITED:
                 let deposited_result = 'Eingelochte Kugeln: ';
                 for(let index in balls_deposited)
