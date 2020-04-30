@@ -79,7 +79,6 @@ function strike_all_balls(game_state_index) {
         }
     }
 
-    console.log(balls_deposited);
     for (let index in balls_deposited) {
         if(balls_deposited.hasOwnProperty(index)) {
             current_game_states[game_state_index].balls.splice(current_game_states[game_state_index].balls.indexOf(balls_deposited[index]), 1);
