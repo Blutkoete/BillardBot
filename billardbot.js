@@ -46,7 +46,7 @@ client.on('message', message => {
         client.commands.get(command).execute(message, args);
     } catch (error) {
         console.error(`[${message.guild.name}] [${message.channel.name}] Error executing command "${command}".`);
-        message.channel.send('there was an error trying to execute that command!');
+        message.channel.send('Internal Bot Error');
     }
 });
 
